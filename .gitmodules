@@ -1,0 +1,3 @@
+[submodule "MPToolKit"]
+	path = addons/MPToolKit
+	url = https://github.com/nikita-pasternatskyi/MPToolKit.git

@@ -1,0 +1,182 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://objects/mega_man_x/x_sprite.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/state_machine_plugin/state_machine/BaseStateMachine.cs" type="Script" id=2]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/state_machine_plugin/state/State.cs" type="Script" id=3]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/player_kinematic_body/PlayerBody2D.cs" type="Script" id=4]
+[ext_resource path="res://objects/mega_man_x/actions/PlayerInputMoveAction2D.cs" type="Script" id=5]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/state_machine_plugin/standard_transitions/ButtonTransition.cs" type="Script" id=6]
+[ext_resource path="res://objects/mega_man_x/actions/PlayerInput.cs" type="Script" id=7]
+[ext_resource path="res://objects/mega_man_x/actions/PresetMoveAction2D.cs" type="Script" id=8]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/state_machine_plugin/standard_actions/SetAnimationEnumValue.cs" type="Script" id=9]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/state_machine_plugin/standard_actions/SetOneShotBoolean.cs" type="Script" id=10]
+[ext_resource path="res://objects/TeleportAction.cs" type="Script" id=11]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/state_machine_plugin/transition/TimerEndedTransition.cs" type="Script" id=12]
+[ext_resource path="res://addons/MPToolKit/MPToolKit/state_machine_plugin/transition/AnimationStateChangedTransition.cs" type="Script" id=13]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 12.0
+height = 18.0
+
+[node name="MegaManX" type="KinematicBody2D"]
+position = Vector2( -1, 0 )
+script = ExtResource( 4 )
+_pathToGroundCheckRay = NodePath("Ground")
+UseGravity = true
+Gravity = 200.0
+Damp = 0.25
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 7 )
+shape = SubResource( 1 )
+
+[node name="Sprite" parent="." instance=ExtResource( 1 )]
+position = Vector2( -40, 0 )
+frame = 1
+
+[node name="XStateMachine" type="Node" parent="."]
+script = ExtResource( 2 )
+_defaultStatePath = NodePath("Teleporting")
+
+[node name="Teleporting" type="Node" parent="XStateMachine"]
+script = ExtResource( 3 )
+
+[node name="Actions" type="Node" parent="XStateMachine/Teleporting"]
+
+[node name="Teleport" type="Node" parent="XStateMachine/Teleporting/Actions"]
+script = ExtResource( 11 )
+OnEnter = true
+OnUpdate = true
+_temporary_vector_offset = Vector2( 0, -300 )
+_waitTime = 4.0
+_pathToSprite = NodePath("../../../../Sprite")
+
+[node name="Timer" type="Timer" parent="XStateMachine/Teleporting/Actions/Teleport"]
+wait_time = 4.0
+one_shot = true
+autostart = true
+
+[node name="Transitions" type="Node" parent="XStateMachine/Teleporting"]
+
+[node name="ToIdle" type="Node" parent="XStateMachine/Teleporting/Transitions"]
+script = ExtResource( 12 )
+_toStatePath = NodePath("../../../Landing")
+_pathToTimer = NodePath("../../Actions/Teleport/Timer")
+
+[node name="Landing" type="Node" parent="XStateMachine"]
+script = ExtResource( 3 )
+
+[node name="Actions" type="Node" parent="XStateMachine/Landing"]
+
+[node name="SetIdleAnimation" type="Node" parent="XStateMachine/Landing/Actions"]
+script = ExtResource( 9 )
+OnEnter = true
+_animatedModelPath = NodePath("../../../../Sprite")
+PropertyName = "State"
+
+[node name="Transitions" type="Node" parent="XStateMachine/Landing"]
+
+[node name="ToIdle" type="Node" parent="XStateMachine/Landing/Transitions"]
+script = ExtResource( 13 )
+_toStatePath = NodePath("../../../Idle")
+_pathToAnimatedModel = NodePath("../../../../Sprite")
+_animationName = "x_intro_finish"
+
+[node name="Idle" type="Node" parent="XStateMachine"]
+script = ExtResource( 3 )
+
+[node name="Actions" type="Node" parent="XStateMachine/Idle"]
+
+[node name="SetIdleAnimation" type="Node" parent="XStateMachine/Idle/Actions"]
+script = ExtResource( 9 )
+OnEnter = true
+_animatedModelPath = NodePath("../../../../Sprite")
+PropertyName = "State"
+
+[node name="Transitions" type="Node" parent="XStateMachine/Idle"]
+
+[node name="ToMove" type="Node" parent="XStateMachine/Idle/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../Run")
+_condition = 2
+_buttonConditions = [ 0, 1, 2, 3 ]
+
+[node name="ToDash" type="Node" parent="XStateMachine/Idle/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../Dash")
+_buttonConditions = [ 5 ]
+
+[node name="Run" type="Node" parent="XStateMachine"]
+script = ExtResource( 3 )
+
+[node name="Actions" type="Node" parent="XStateMachine/Run"]
+
+[node name="SetRunAnimation" type="Node" parent="XStateMachine/Run/Actions"]
+script = ExtResource( 9 )
+OnEnter = true
+_animatedModelPath = NodePath("../../../../Sprite")
+PropertyName = "IdleOrRun"
+Value = 1
+
+[node name="SetStartedRun" type="Node" parent="XStateMachine/Run/Actions"]
+script = ExtResource( 10 )
+OnExit = true
+_animatedModelPath = NodePath("../../../../Sprite")
+PropertyName = "StartedRun"
+Value = true
+
+[node name="Move" type="Node" parent="XStateMachine/Run/Actions"]
+script = ExtResource( 5 )
+OnUpdate = true
+_speed = 80.0
+
+[node name="Transitions" type="Node" parent="XStateMachine/Run"]
+
+[node name="ToDash" type="Node" parent="XStateMachine/Run/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../Dash")
+_buttonConditions = [ 5 ]
+
+[node name="ToIdle" type="Node" parent="XStateMachine/Run/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../Idle")
+_condition = 3
+_buttonConditions = [ 0, 1, 2, 3 ]
+_allTriggered = true
+
+[node name="Jump" type="Node" parent="XStateMachine"]
+script = ExtResource( 3 )
+
+[node name="Actions" type="Node" parent="XStateMachine/Jump"]
+
+[node name="Transitions" type="Node" parent="XStateMachine/Jump"]
+
+[node name="InAir" type="Node" parent="XStateMachine"]
+script = ExtResource( 3 )
+
+[node name="Actions" type="Node" parent="XStateMachine/InAir"]
+
+[node name="Transitions" type="Node" parent="XStateMachine/InAir"]
+
+[node name="Dash" type="Node" parent="XStateMachine"]
+script = ExtResource( 3 )
+
+[node name="DashMove" type="Node" parent="XStateMachine/Dash"]
+script = ExtResource( 8 )
+OnUpdate = true
+_speed = 240.0
+_moveInput = Vector2( 1, 0 )
+_relative = true
+
+[node name="ToIdle" type="Node" parent="XStateMachine/Dash"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../Idle")
+_condition = 1
+_buttonConditions = [ 5 ]
+
+[node name="Ground" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 0, 25 )
+
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource( 7 )

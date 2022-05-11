@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\MyGames\\MegaManClone\\MegaManClone.csproj",
-      "projectName": "MegaManClone",
-      "projectPath": "E:\\MyGames\\MegaManClone\\MegaManClone.csproj",
+      "projectUniqueName": "E:\\MyGames\\MegaManClone\\MegaManXClone.csproj",
+      "projectName": "MegaManXClone",
+      "projectPath": "E:\\MyGames\\MegaManClone\\MegaManXClone.csproj",
       "packagesPath": "C:\\Users\\NikitaPasternatskyi\\.nuget\\packages\\",
       "outputPath": "E:\\MyGames\\MegaManClone\\.mono\\temp\\obj\\",
       "projectStyle": "PackageReference",

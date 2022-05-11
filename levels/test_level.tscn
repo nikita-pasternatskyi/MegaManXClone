@@ -3,7 +3,7 @@
 [ext_resource path="res://levels/test_level_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://objects/mega_man_x/MegaManX.tscn" type="PackedScene" id=2]
 
-[node name="Node2D" type="Node2D"]
+[node name="Test_Level" type="Node2D"]
 position = Vector2( 0, -1 )
 
 [node name="Ground" type="TileMap" parent="."]
@@ -12,12 +12,7 @@ cell_size = Vector2( 38, 38 )
 cell_tile_origin = 2
 show_collision = true
 format = 1
-tile_data = PoolIntArray( -131072, 1, 0, -131071, 1, 0, -131070, 1, 0, -131069, 1, 0, -131068, 1, 0, -131062, 1, 0, -131061, 1, 0, -131060, 1, 0, -131059, 1, 0, -131058, 1, 0, -131057, 1, 0, -65536, 1, 0, -65535, 1, 0, -65534, 1, 0, -65533, 1, 0, -65532, 1, 0, -65531, 1, 0, -65530, 1, 0, -65529, 1, 0, -65528, 1, 0, -65527, 1, 0, -65526, 1, 0, -65525, 1, 0, -65524, 1, 0, -65523, 1, 0, -65522, 1, 0, -65521, 1, 0 )
+tile_data = PoolIntArray( -327680, 1, 0, -262144, 1, 0, -196608, 1, 0, -131072, 1, 0, -131071, 1, 0, -131070, 1, 0, -131069, 1, 0, -131068, 1, 0, -131067, 1, 0, -131066, 1, 0, -131062, 1, 0, -131061, 1, 0, -131060, 1, 0, -131059, 1, 0, -131058, 1, 0, -131057, 1, 0, -65536, 1, 0, -65535, 1, 0, -65534, 1, 0, -65533, 1, 0, -65532, 1, 0, -65531, 1, 0, -65530, 1, 0, -65529, 1, 0, -65528, 1, 0, -65527, 1, 0, -65526, 1, 0, -65525, 1, 0, -65524, 1, 0, -65523, 1, 0, -65522, 1, 0, -65521, 1, 0 )
 
 [node name="MegaManX" parent="." instance=ExtResource( 2 )]
-position = Vector2( 22, -104 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 130, -112 )
-current = true
-zoom = Vector2( 0.25, 0.25 )
+position = Vector2( 83, -104 )

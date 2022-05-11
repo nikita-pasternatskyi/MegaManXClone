@@ -1,0 +1,9 @@
+E:\MyGames\MegaManClone\.mono\temp\obj\Debug\MegaManXClone.csproj.AssemblyReference.cache
+E:\MyGames\MegaManClone\.mono\temp\obj\Debug\MegaManXClone.GeneratedMSBuildEditorConfig.editorconfig
+E:\MyGames\MegaManClone\.mono\temp\obj\Debug\MegaManXClone.AssemblyInfoInputs.cache
+E:\MyGames\MegaManClone\.mono\temp\obj\Debug\MegaManXClone.AssemblyInfo.cs
+E:\MyGames\MegaManClone\.mono\temp\obj\Debug\MegaManXClone.csproj.CoreCompileInputs.cache
+E:\MyGames\MegaManClone\.mono\temp\bin\Debug\MegaManXClone.dll
+E:\MyGames\MegaManClone\.mono\temp\bin\Debug\MegaManXClone.pdb
+E:\MyGames\MegaManClone\.mono\temp\obj\Debug\MegaManXClone.dll
+E:\MyGames\MegaManClone\.mono\temp\obj\Debug\MegaManXClone.pdb

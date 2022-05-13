@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/MPToolKit/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/AsepriteWizard/plugin.cfg", "res://addons/MPToolKit/MPToolKit/plugin.cfg", "res://addons/MPToolKit/plugin.cfg", "res://addons/mpToolKit/MPToolKit/plugin.cfg" )
 
 [input]
 

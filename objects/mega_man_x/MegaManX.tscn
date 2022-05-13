@@ -336,9 +336,9 @@ input_5/name = "Fall"
 input_5/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=23]
-graph_offset = Vector2( 1151, 87.5 )
+graph_offset = Vector2( -206.411, -116.288 )
 nodes/Animation/node = SubResource( 9 )
-nodes/Animation/position = Vector2( 140, 260 )
+nodes/Animation/position = Vector2( -140, 260 )
 nodes/Appear/node = SubResource( 15 )
 nodes/Appear/position = Vector2( 900, -40 )
 nodes/Dash/node = SubResource( 29 )
@@ -368,21 +368,21 @@ nodes/IdleSpeed/position = Vector2( 260, -280 )
 nodes/IntoFinishSpeed/node = SubResource( 24 )
 nodes/IntoFinishSpeed/position = Vector2( 1080, -40 )
 nodes/IntoRunSpeed/node = SubResource( 66 )
-nodes/IntoRunSpeed/position = Vector2( 320, 260 )
+nodes/IntoRunSpeed/position = Vector2( 40, 260 )
 nodes/Jump/node = SubResource( 54 )
 nodes/Jump/position = Vector2( 1100, 440 )
 nodes/Land/node = SubResource( 51 )
 nodes/Land/position = Vector2( 440, -20 )
 nodes/Run/node = SubResource( 5 )
-nodes/Run/position = Vector2( 140, 120 )
+nodes/Run/position = Vector2( -140, 120 )
 nodes/RunSpeed/node = SubResource( 8 )
-nodes/RunSpeed/position = Vector2( 320, 120 )
+nodes/RunSpeed/position = Vector2( 40, 120 )
 nodes/StartedRun/node = SubResource( 10 )
 nodes/StartedRun/position = Vector2( 660, 120 )
 nodes/State/node = SubResource( 6 )
 nodes/State/position = Vector2( 1600, 40 )
 nodes/output/position = Vector2( 2120, 80 )
-node_connections = [ "output", 0, "State", "StartedRun", 0, "RunSpeed", "StartedRun", 1, "IntoRunSpeed", "IdleSpeed", 0, "Idle", "FromAir", 0, "FromDash", "FromAir", 1, "Land", "DashSpeed", 0, "Dash", "RunSpeed", 0, "Run", "FromFire", 0, "FromAir", "FromFire", 1, "FireRecover", "FromDash", 0, "IdleSpeed", "FromDash", 1, "DashRecover", "FromTeleport", 0, "FromFire", "FromTeleport", 1, "IntoFinishSpeed", "IntoFinishSpeed", 0, "Appear", "IntoRunSpeed", 0, "Animation", "State", 0, "FromTeleport", "State", 1, "StartedRun", "State", 2, "Flying", "State", 3, "DashSpeed", "State", 4, "Jump", "State", 5, "Fall" ]
+node_connections = [ "output", 0, "State", "IntoRunSpeed", 0, "Animation", "IdleSpeed", 0, "Idle", "FromTeleport", 0, "FromFire", "FromTeleport", 1, "IntoFinishSpeed", "IntoFinishSpeed", 0, "Appear", "StartedRun", 0, "RunSpeed", "StartedRun", 1, "IntoRunSpeed", "RunSpeed", 0, "Run", "State", 0, "FromTeleport", "State", 1, "StartedRun", "State", 2, "Flying", "State", 3, "DashSpeed", "State", 4, "Jump", "State", 5, "Fall", "FromFire", 0, "FromAir", "FromFire", 1, "FireRecover", "FromAir", 0, "FromDash", "FromAir", 1, "Land", "FromDash", 0, "IdleSpeed", "FromDash", 1, "DashRecover", "DashSpeed", 0, "Dash" ]
 
 [sub_resource type="RectangleShape2D" id=31]
 extents = Vector2( 8, 19.5 )
@@ -401,6 +401,7 @@ render_mode blend_mix;
 uniform int particles_anim_h_frames;
 uniform int particles_anim_v_frames;
 uniform float particle_frame_to_display;
+
 void vertex() {
 	float h_frames = float(particles_anim_h_frames);
 	float v_frames = float(particles_anim_v_frames);
@@ -442,8 +443,6 @@ Gravity = 600.0
 _maxSlopeAngle = 80.0
 _minimumYVelocity = 500.0
 _groundCheckRayDirection = Vector2( 0, 50 )
-
-[node name="RotateToFaceInput2D" type="Node" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -10, 3 )
@@ -534,7 +533,7 @@ _toStatePath = NodePath("../../../NoInput")
 
 [node name="Time" type="Node" parent="StateMachine/Teleporting/Transitions/ToArrive"]
 script = ExtResource( 19 )
-_seconds = 0.75
+_seconds = 0.65
 
 [node name="Actions" type="Node" parent="StateMachine/Teleporting"]
 
@@ -573,7 +572,7 @@ _toStatePath = NodePath("../../../Run")
 [node name="Buttons" type="Node" parent="StateMachine/Idle/Transitions/ToRun"]
 script = ExtResource( 10 )
 _condition = 2
-_buttonConditions = [ 0, 1, 2, 3 ]
+_buttonConditions = [ 2, 3 ]
 
 [node name="ToJump" type="Node" parent="StateMachine/Idle/Transitions"]
 script = ExtResource( 6 )
@@ -625,7 +624,7 @@ _toStatePath = NodePath("../../../Idle")
 [node name="Buttons" type="Node" parent="StateMachine/Run/Transitions/ToIdle"]
 script = ExtResource( 10 )
 _condition = 3
-_buttonConditions = [ 0, 1, 2, 3 ]
+_buttonConditions = [ 2, 3 ]
 _allTriggered = true
 
 [node name="X==0" type="Node" parent="StateMachine/Run/Transitions/ToIdle"]

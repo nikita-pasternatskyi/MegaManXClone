@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=2]
+[gd_scene load_steps=74 format=2]
 
 [ext_resource path="res://addons/MPToolKit/animator/Animator2D.cs" type="Script" id=1]
 [ext_resource path="res://objects/mega_man_x/XInput.cs" type="Script" id=2]
@@ -23,6 +23,9 @@
 [ext_resource path="res://addons/MPToolKit/state_machine_plugin/standard_actions/particle_system_2D/ReplicateSpriteFrameToParticle2D.cs" type="Script" id=21]
 [ext_resource path="res://objects/mega_man_x/animations/x_intro_finish.tres" type="Animation" id=22]
 [ext_resource path="res://addons/MPToolKit/player/state_machine_actions/BurstForce2D.cs" type="Script" id=23]
+[ext_resource path="res://addons/MPToolKit/player/FaceDirection.cs" type="Script" id=24]
+[ext_resource path="res://addons/MPToolKit/state_machine_plugin/standard_actions/particle_system_2D/ReplicateNode2DScaleToParticle2D.cs" type="Script" id=25]
+[ext_resource path="res://addons/MPToolKit/player/InputDifferentFromDirection.cs" type="Script" id=26]
 
 [sub_resource type="StreamTexture" id=58]
 load_path = "res://.import/x_.png-7f7d1f8788fe7450bfcb5a7866bd7469.stex"
@@ -336,7 +339,7 @@ input_5/name = "Fall"
 input_5/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=23]
-graph_offset = Vector2( 1035, 157.5 )
+graph_offset = Vector2( 1189, 101.5 )
 nodes/Animation/node = SubResource( 9 )
 nodes/Animation/position = Vector2( -140, 260 )
 nodes/Appear/node = SubResource( 15 )
@@ -382,7 +385,7 @@ nodes/StartedRun/position = Vector2( 660, 120 )
 nodes/State/node = SubResource( 6 )
 nodes/State/position = Vector2( 1600, 40 )
 nodes/output/position = Vector2( 2120, 80 )
-node_connections = [ "output", 0, "State", "DashSpeed", 0, "Dash", "FromAir", 0, "FromDash", "FromAir", 1, "Land", "FromFire", 0, "FromAir", "FromFire", 1, "FireRecover", "IdleSpeed", 0, "Idle", "State", 0, "FromTeleport", "State", 1, "StartedRun", "State", 2, "Flying", "State", 3, "DashSpeed", "State", 4, "Jump", "State", 5, "Fall", "IntoFinishSpeed", 0, "Appear", "StartedRun", 0, "RunSpeed", "StartedRun", 1, "IntoRunSpeed", "RunSpeed", 0, "Run", "FromDash", 0, "IdleSpeed", "FromDash", 1, "DashRecover", "FromTeleport", 0, "FromFire", "FromTeleport", 1, "IntoFinishSpeed", "IntoRunSpeed", 0, "Animation" ]
+node_connections = [ "output", 0, "State", "State", 0, "FromTeleport", "State", 1, "StartedRun", "State", 2, "Flying", "State", 3, "DashSpeed", "State", 4, "Jump", "State", 5, "Fall", "FromDash", 0, "IdleSpeed", "FromDash", 1, "DashRecover", "DashSpeed", 0, "Dash", "FromAir", 0, "FromDash", "FromAir", 1, "Land", "FromFire", 0, "FromAir", "FromFire", 1, "FireRecover", "FromTeleport", 0, "FromFire", "FromTeleport", 1, "IntoFinishSpeed", "IdleSpeed", 0, "Idle", "StartedRun", 0, "RunSpeed", "StartedRun", 1, "IntoRunSpeed", "IntoRunSpeed", 0, "Animation", "IntoFinishSpeed", 0, "Appear", "RunSpeed", 0, "Run" ]
 
 [sub_resource type="RectangleShape2D" id=31]
 extents = Vector2( 8, 19.5 )
@@ -401,8 +404,10 @@ render_mode blend_mix;
 uniform int particles_anim_h_frames;
 uniform int particles_anim_v_frames;
 uniform float particle_frame_to_display;
+uniform vec2 scale = vec2(1.0,1.0);
 
 void vertex() {
+	VERTEX.xy *= scale;
 	float h_frames = float(particles_anim_h_frames);
 	float v_frames = float(particles_anim_v_frames);
 	VERTEX.xy /= vec2(h_frames, v_frames);
@@ -419,6 +424,7 @@ shader = SubResource( 64 )
 shader_param/particles_anim_h_frames = 8
 shader_param/particles_anim_v_frames = 8
 shader_param/particle_frame_to_display = null
+shader_param/scale = Vector2( 1, 1 )
 
 [sub_resource type="Gradient" id=62]
 offsets = PoolRealArray( 0.0165563, 1 )
@@ -496,8 +502,8 @@ parameters/State/current = 2
 script = ExtResource( 2 )
 
 [node name="StateMachineDebug" parent="." instance=ExtResource( 17 )]
-position = Vector2( 55, 22 )
 scale = Vector2( 0.68, 0.68 )
+transform = Transform2D( 0.68, 0, 0, 0.68, 0, 0 )
 pathToStateMachine = NodePath("../StateMachine")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -507,6 +513,12 @@ shape = SubResource( 31 )
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 3 )
 _defaultStatePath = NodePath("Teleporting")
+
+[node name="Actions" type="Node" parent="StateMachine"]
+
+[node name="FaceX" type="Node" parent="StateMachine/Actions"]
+script = ExtResource( 24 )
+OnUpdate = true
 
 [node name="Teleporting" type="Node" parent="StateMachine"]
 script = ExtResource( 5 )
@@ -596,15 +608,15 @@ script = ExtResource( 10 )
 _buttonConditions = [ 5 ]
 _allTriggered = true
 
-[node name="ToAir" type="Node" parent="StateMachine/Idle/Transitions"]
+[node name="ToCoyoteAir" type="Node" parent="StateMachine/Idle/Transitions"]
 script = ExtResource( 6 )
-_toStatePath = NodePath("../../../InAir")
+_toStatePath = NodePath("../../../CoyoteAir")
 
-[node name="Y>0" type="Node" parent="StateMachine/Idle/Transitions/ToAir"]
+[node name="Y>0" type="Node" parent="StateMachine/Idle/Transitions/ToCoyoteAir"]
 script = ExtResource( 12 )
 _axis = 2
 
-[node name="Grounded = false" type="Node" parent="StateMachine/Idle/Transitions/ToAir"]
+[node name="Grounded = false" type="Node" parent="StateMachine/Idle/Transitions/ToCoyoteAir"]
 script = ExtResource( 7 )
 _awaitedCondition = false
 
@@ -657,15 +669,15 @@ _toStatePath = NodePath("../../../Jump")
 script = ExtResource( 10 )
 _buttonConditions = [ 4 ]
 
-[node name="ToAir" type="Node" parent="StateMachine/Run/Transitions"]
+[node name="ToCoyoteAir" type="Node" parent="StateMachine/Run/Transitions"]
 script = ExtResource( 6 )
-_toStatePath = NodePath("../../../InAir")
+_toStatePath = NodePath("../../../CoyoteAir")
 
-[node name="Y>0" type="Node" parent="StateMachine/Run/Transitions/ToAir"]
+[node name="Y>0" type="Node" parent="StateMachine/Run/Transitions/ToCoyoteAir"]
 script = ExtResource( 12 )
 _axis = 2
 
-[node name="Grounded = false" type="Node" parent="StateMachine/Run/Transitions/ToAir"]
+[node name="Grounded = false" type="Node" parent="StateMachine/Run/Transitions/ToCoyoteAir"]
 script = ExtResource( 7 )
 _awaitedCondition = false
 
@@ -751,6 +763,56 @@ script = ExtResource( 16 )
 _onExit = true
 _axisToKeep = 1
 
+[node name="CoyoteAir" type="Node" parent="StateMachine"]
+script = ExtResource( 5 )
+
+[node name="Transitions" type="Node" parent="StateMachine/CoyoteAir"]
+
+[node name="ToAir" type="Node" parent="StateMachine/CoyoteAir/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../InAir")
+
+[node name="Timer" type="Node" parent="StateMachine/CoyoteAir/Transitions/ToAir"]
+script = ExtResource( 19 )
+_seconds = 0.2
+
+[node name="ToJump" type="Node" parent="StateMachine/CoyoteAir/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../Jump")
+
+[node name="Buttons" type="Node" parent="StateMachine/CoyoteAir/Transitions/ToJump"]
+script = ExtResource( 10 )
+_buttonConditions = [ 4 ]
+
+[node name="Actions" type="Node" parent="StateMachine/CoyoteAir"]
+
+[node name="DIS_ANIM_OS_DASH_RECOVERY" type="Node" parent="StateMachine/CoyoteAir/Actions"]
+script = ExtResource( 18 )
+_onEnter = true
+_animatorPath = NodePath("../../../../Sprite")
+PropertyName = "FromDash"
+
+[node name="ANIM_AIR" type="Node" parent="StateMachine/CoyoteAir/Actions"]
+script = ExtResource( 9 )
+_onEnter = true
+_animatorPath = NodePath("../../../../Sprite")
+PropertyName = "State"
+Value = 5
+
+[node name="Move" type="Node" parent="StateMachine/CoyoteAir/Actions"]
+script = ExtResource( 15 )
+OnUpdate = true
+_slowDown = 1.0
+_speedUp = 1.0
+_speed = 1.0
+
+[node name="ANIM_OS_AIR_RECOVERY" type="Node" parent="StateMachine/CoyoteAir/Actions"]
+script = ExtResource( 18 )
+_onExit = true
+_animatorPath = NodePath("../../../../Sprite")
+PropertyName = "FromAir"
+Value = true
+
 [node name="InAir" type="Node" parent="StateMachine"]
 script = ExtResource( 5 )
 
@@ -819,6 +881,12 @@ OnUpdate = true
 _pathToSprite = NodePath("../../../../Sprite")
 _pathToParticleSystem = NodePath("../../../../GhostParticles")
 
+[node name="PARTICLE_SYSTEM_SET_SCALE" type="Node" parent="StateMachine/DashStates/Actions"]
+script = ExtResource( 25 )
+OnUpdate = true
+_pathToObject = NodePath("../../../..")
+_pathToParticleSystem = NodePath("../../../../GhostParticles")
+
 [node name="PARTICLE_SYSTEM_OFF" type="Node" parent="StateMachine/DashStates/Actions"]
 script = ExtResource( 14 )
 _onExit = true
@@ -828,6 +896,13 @@ _pathToParticleSystem = NodePath("../../../../GhostParticles")
 script = ExtResource( 5 )
 
 [node name="Transitions" type="Node" parent="StateMachine/DashStates/Dash"]
+
+[node name="ToRunOppositeDirection" type="Node" parent="StateMachine/DashStates/Dash/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../Run")
+
+[node name="OppositeInputDirection" type="Node" parent="StateMachine/DashStates/Dash/Transitions/ToRunOppositeDirection"]
+script = ExtResource( 26 )
 
 [node name="ToIdle" type="Node" parent="StateMachine/DashStates/Dash/Transitions"]
 script = ExtResource( 6 )
@@ -855,13 +930,13 @@ _allTriggered = true
 script = ExtResource( 6 )
 _toStatePath = NodePath("../../../../Run")
 
-[node name="Buttons" type="Node" parent="StateMachine/DashStates/Dash/Transitions/ToRunInput"]
+[node name="DashReleased" type="Node" parent="StateMachine/DashStates/Dash/Transitions/ToRunInput"]
 script = ExtResource( 10 )
 _condition = 1
 _buttonConditions = [ 5 ]
 _allTriggered = true
 
-[node name="WASD" type="Node" parent="StateMachine/DashStates/Dash/Transitions/ToRunInput"]
+[node name="Moving" type="Node" parent="StateMachine/DashStates/Dash/Transitions/ToRunInput"]
 script = ExtResource( 10 )
 _condition = 2
 _buttonConditions = [ 2, 3 ]
@@ -878,7 +953,7 @@ _allTriggered = true
 
 [node name="ToAir" type="Node" parent="StateMachine/DashStates/Dash/Transitions"]
 script = ExtResource( 6 )
-_toStatePath = NodePath("../../../InAirDash")
+_toStatePath = NodePath("../../../../CoyoteAir")
 
 [node name="Grounded = false" type="Node" parent="StateMachine/DashStates/Dash/Transitions/ToAir"]
 script = ExtResource( 7 )
@@ -919,6 +994,7 @@ _axis = 1
 _time = 1.0
 _speedCurve = SubResource( 68 )
 _force = Vector2( 3, 0 )
+_applyRelativeToDirection = true
 
 [node name="JumpDash" type="Node" parent="StateMachine/DashStates"]
 script = ExtResource( 5 )
@@ -974,6 +1050,10 @@ _slowDown = 1.0
 _speedUp = 1.0
 _speed = 2.5
 
+[node name="FaceX" type="Node" parent="StateMachine/DashStates/JumpDash/Actions"]
+script = ExtResource( 24 )
+OnUpdate = true
+
 [node name="InAirDash" type="Node" parent="StateMachine/DashStates"]
 script = ExtResource( 5 )
 
@@ -1023,6 +1103,10 @@ _onExit = true
 _animatorPath = NodePath("../../../../../Sprite")
 PropertyName = "FromAir"
 Value = true
+
+[node name="FaceX" type="Node" parent="StateMachine/DashStates/InAirDash/Actions"]
+script = ExtResource( 24 )
+OnUpdate = true
 
 [node name="GhostParticles" type="Particles2D" parent="."]
 material = SubResource( 65 )

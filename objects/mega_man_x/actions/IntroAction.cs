@@ -20,7 +20,7 @@ namespace XClone
 
         public override void Init(StateMachine stateMachine)
         {
-            _animator = stateMachine.GetNodeOfType<Animator2D>();
+            _animator = stateMachine.GetCachedNode<Animator2D>();
             this.TryGetNodeFromPath(_pathToSprite, out _sprite);
             _originPosition = _sprite.Position;
             _modifiedPosition = _originPosition + _offset;

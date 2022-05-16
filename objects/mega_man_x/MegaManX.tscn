@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=2]
+[gd_scene load_steps=80 format=2]
 
 [ext_resource path="res://addons/MPToolKit/animator/Animator2D.cs" type="Script" id=1]
 [ext_resource path="res://objects/mega_man_x/XInput.cs" type="Script" id=2]
@@ -26,6 +26,11 @@
 [ext_resource path="res://addons/MPToolKit/player/FaceDirection.cs" type="Script" id=24]
 [ext_resource path="res://addons/MPToolKit/state_machine_plugin/standard_actions/particle_system_2D/ReplicateNode2DScaleToParticle2D.cs" type="Script" id=25]
 [ext_resource path="res://addons/MPToolKit/player/InputDifferentFromDirection.cs" type="Script" id=26]
+[ext_resource path="res://addons/MPToolKit/state_machine_plugin/standard_conditions/TestCondition.cs" type="Script" id=27]
+[ext_resource path="res://addons/MPToolKit/state_machine_plugin/standard_conditions/PredefinedRaycast2DCondition.cs" type="Script" id=28]
+[ext_resource path="res://addons/MPToolKit/state_machine_plugin/standard_conditions/ButtonsHoldCondition.cs" type="Script" id=29]
+[ext_resource path="res://addons/MPToolKit/state_machine_plugin/standard_actions/LogAction.cs" type="Script" id=30]
+[ext_resource path="res://addons/MPToolKit/player/state_machine_actions/FlipPlayer2D.cs" type="Script" id=31]
 
 [sub_resource type="StreamTexture" id=58]
 load_path = "res://.import/x_.png-7f7d1f8788fe7450bfcb5a7866bd7469.stex"
@@ -45,7 +50,7 @@ tracks/0/keys = {
 "values": [ 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0 ]
 }
 tracks/1/type = "method"
-tracks/1/path = NodePath("StateMachine/NoInput/Transitions/ToIdle/ManualOnArriveAnim")
+tracks/1/path = NodePath("StateMachine/Entrance/NoInput/Transitions/ToIdle/ManualOnArriveAnim")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -385,7 +390,7 @@ nodes/StartedRun/position = Vector2( 660, 120 )
 nodes/State/node = SubResource( 6 )
 nodes/State/position = Vector2( 1600, 40 )
 nodes/output/position = Vector2( 2120, 80 )
-node_connections = [ "output", 0, "State", "State", 0, "FromTeleport", "State", 1, "StartedRun", "State", 2, "Flying", "State", 3, "DashSpeed", "State", 4, "Jump", "State", 5, "Fall", "FromDash", 0, "IdleSpeed", "FromDash", 1, "DashRecover", "DashSpeed", 0, "Dash", "FromAir", 0, "FromDash", "FromAir", 1, "Land", "FromFire", 0, "FromAir", "FromFire", 1, "FireRecover", "FromTeleport", 0, "FromFire", "FromTeleport", 1, "IntoFinishSpeed", "IdleSpeed", 0, "Idle", "StartedRun", 0, "RunSpeed", "StartedRun", 1, "IntoRunSpeed", "IntoRunSpeed", 0, "Animation", "IntoFinishSpeed", 0, "Appear", "RunSpeed", 0, "Run" ]
+node_connections = [ "output", 0, "State", "FromAir", 0, "FromDash", "FromAir", 1, "Land", "FromTeleport", 0, "FromFire", "FromTeleport", 1, "IntoFinishSpeed", "IntoRunSpeed", 0, "Animation", "IntoFinishSpeed", 0, "Appear", "FromFire", 0, "FromAir", "FromFire", 1, "FireRecover", "DashSpeed", 0, "Dash", "IdleSpeed", 0, "Idle", "FromDash", 0, "IdleSpeed", "FromDash", 1, "DashRecover", "RunSpeed", 0, "Run", "StartedRun", 0, "RunSpeed", "StartedRun", 1, "IntoRunSpeed", "State", 0, "FromTeleport", "State", 1, "StartedRun", "State", 2, "Flying", "State", 3, "DashSpeed", "State", 4, "Jump", "State", 5, "Fall" ]
 
 [sub_resource type="RectangleShape2D" id=31]
 extents = Vector2( 8, 19.5 )
@@ -394,7 +399,10 @@ extents = Vector2( 8, 19.5 )
 _data = [ Vector2( 0, 0 ), 0.0, 1.0, 0, 1, Vector2( 1, 1 ), 1.0, 0.0, 1, 0 ]
 
 [sub_resource type="Curve" id=68]
-_data = [ Vector2( 0, 0.872727 ), 0.0, -5.58852, 0, 1, Vector2( 0.156164, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.764384, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 4.24419, 0.0, 1, 0 ]
+_data = [ Vector2( 0, 0.872727 ), 0.0, -5.58852, 0, 1, Vector2( 0.156164, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.764384, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 8.22562, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=69]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.881818 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Shader" id=64]
 code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable.mono's CanvasItemMaterial.
@@ -449,6 +457,10 @@ Gravity = 600.0
 _maxSlopeAngle = 80.0
 _minimumYVelocity = 500.0
 _groundCheckRayDirection = Vector2( 0, 50 )
+
+[node name="WallCheck" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 10, 0 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -10, 3 )
@@ -512,70 +524,32 @@ shape = SubResource( 31 )
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 3 )
-_defaultStatePath = NodePath("Teleporting")
+_sharedStatePath = NodePath("SharedState")
+_startStatePath = NodePath("Entrance/Teleporting")
 
-[node name="Actions" type="Node" parent="StateMachine"]
+[node name="SharedState" type="Node" parent="StateMachine"]
+script = ExtResource( 5 )
 
-[node name="FaceX" type="Node" parent="StateMachine/Actions"]
+[node name="Actions" type="Node" parent="StateMachine/SharedState"]
+
+[node name="FaceX" type="Node" parent="StateMachine/SharedState/Actions"]
 script = ExtResource( 24 )
 OnUpdate = true
 
-[node name="Teleporting" type="Node" parent="StateMachine"]
+[node name="Start" type="Node" parent="StateMachine"]
 script = ExtResource( 5 )
 
-[node name="Transitions" type="Node" parent="StateMachine/Teleporting"]
+[node name="Transitions" type="Node" parent="StateMachine/Start"]
 
-[node name="ToArrive" type="Node" parent="StateMachine/Teleporting/Transitions"]
+[node name="ToTeleport" type="Node" parent="StateMachine/Start/Transitions"]
 script = ExtResource( 6 )
-_toStatePath = NodePath("../../../NoInput")
+_toStatePath = NodePath("../../../Entrance/Teleporting")
 
-[node name="Time" type="Node" parent="StateMachine/Teleporting/Transitions/ToArrive"]
-script = ExtResource( 19 )
-_seconds = 0.65
+[node name="Yes" type="Node" parent="StateMachine/Start/Transitions/ToTeleport"]
+script = ExtResource( 27 )
+_condition = true
 
-[node name="Actions" type="Node" parent="StateMachine/Teleporting"]
-
-[node name="ANIM_TELEPORT" type="Node" parent="StateMachine/Teleporting/Actions"]
-script = ExtResource( 9 )
-_onEnter = true
-_animatorPath = NodePath("../../../../Sprite")
-PropertyName = "State"
-Value = 2
-
-[node name="ANIM_OS_ARRIVED" type="Node" parent="StateMachine/Teleporting/Actions"]
-script = ExtResource( 18 )
-_onExit = true
-_animatorPath = NodePath("../../../../Sprite")
-PropertyName = "FromTeleport"
-Value = true
-
-[node name="IntroAction" type="Node" parent="StateMachine/Teleporting/Actions"]
-script = ExtResource( 8 )
-OnUpdate = true
-_pathToSprite = NodePath("../../../../Sprite")
-_speedCurve = SubResource( 2 )
-_duration = 0.75
-_offset = Vector2( 0, -250 )
-
-[node name="ANIM_IDLE" type="Node" parent="StateMachine/Teleporting/Actions"]
-script = ExtResource( 9 )
-_onExit = true
-_animatorPath = NodePath("../../../../Sprite")
-PropertyName = "State"
-
-[node name="NoInput" type="Node" parent="StateMachine"]
-script = ExtResource( 5 )
-
-[node name="Transitions" type="Node" parent="StateMachine/NoInput"]
-
-[node name="ToIdle" type="Node" parent="StateMachine/NoInput/Transitions"]
-script = ExtResource( 6 )
-_toStatePath = NodePath("../../../Idle")
-
-[node name="ManualOnArriveAnim" type="Node" parent="StateMachine/NoInput/Transitions/ToIdle"]
-script = ExtResource( 13 )
-
-[node name="Actions" type="Node" parent="StateMachine/NoInput"]
+[node name="Actions" type="Node" parent="StateMachine/Start"]
 
 [node name="Idle" type="Node" parent="StateMachine"]
 script = ExtResource( 5 )
@@ -590,6 +564,11 @@ _toStatePath = NodePath("../../../Run")
 script = ExtResource( 10 )
 _condition = 2
 _buttonConditions = [ 2, 3 ]
+
+[node name="RayCast" type="Node" parent="StateMachine/Idle/Transitions/ToRun"]
+script = ExtResource( 28 )
+_awaitedCondition = false
+_pathToRaycast = NodePath("../../../../../WallCheck")
 
 [node name="ToJump" type="Node" parent="StateMachine/Idle/Transitions"]
 script = ExtResource( 6 )
@@ -652,6 +631,14 @@ script = ExtResource( 12 )
 _axis = 1
 _comparisonType = 2
 
+[node name="ToIdleOnWall" type="Node" parent="StateMachine/Run/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../Idle")
+
+[node name="RayCast" type="Node" parent="StateMachine/Run/Transitions/ToIdleOnWall"]
+script = ExtResource( 28 )
+_pathToRaycast = NodePath("../../../../../WallCheck")
+
 [node name="ToDash" type="Node" parent="StateMachine/Run/Transitions"]
 script = ExtResource( 6 )
 _toStatePath = NodePath("../../../DashStates/Dash")
@@ -686,6 +673,7 @@ _awaitedCondition = false
 [node name="DIS_ANIM_OS_DASH_RECOVERY" type="Node" parent="StateMachine/Run/Actions"]
 script = ExtResource( 18 )
 _onEnter = true
+_onExit = true
 _animatorPath = NodePath("../../../../Sprite")
 PropertyName = "FromDash"
 
@@ -745,6 +733,11 @@ _onEnter = true
 _animatorPath = NodePath("../../../../Sprite")
 PropertyName = "State"
 Value = 4
+
+[node name="SetYVelocityToZero2" type="Node" parent="StateMachine/Jump/Actions"]
+script = ExtResource( 16 )
+_onEnter = true
+_axisToKeep = 1
 
 [node name="Jump" type="Node" parent="StateMachine/Jump/Actions"]
 script = ExtResource( 11 )
@@ -830,6 +823,24 @@ script = ExtResource( 12 )
 _axis = 2
 _comparisonType = 4
 
+[node name="ToWallSlide" type="Node" parent="StateMachine/InAir/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../WallSlide/Slide")
+
+[node name="RayCast" type="Node" parent="StateMachine/InAir/Transitions/ToWallSlide"]
+script = ExtResource( 28 )
+_pathToRaycast = NodePath("../../../../../WallCheck")
+
+[node name="InputCorrespondsToDirection" type="Node" parent="StateMachine/InAir/Transitions/ToWallSlide"]
+script = ExtResource( 26 )
+_awaitedCondition = false
+
+[node name="InputHeldFor 02 Seconds" type="Node" parent="StateMachine/InAir/Transitions/ToWallSlide"]
+script = ExtResource( 29 )
+_condition = 2
+_buttonConditions = [ 2, 3 ]
+_time = 0.05
+
 [node name="Actions" type="Node" parent="StateMachine/InAir"]
 
 [node name="DIS_ANIM_OS_DASH_RECOVERY" type="Node" parent="StateMachine/InAir/Actions"]
@@ -863,34 +874,99 @@ _animatorPath = NodePath("../../../../Sprite")
 PropertyName = "FromAir"
 Value = true
 
+[node name="Entrance" type="Node" parent="StateMachine"]
+script = ExtResource( 3 )
+_startStatePath = NodePath("NoInput")
+
+[node name="Teleporting" type="Node" parent="StateMachine/Entrance"]
+script = ExtResource( 5 )
+
+[node name="Transitions" type="Node" parent="StateMachine/Entrance/Teleporting"]
+
+[node name="ToArrive" type="Node" parent="StateMachine/Entrance/Teleporting/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../NoInput")
+
+[node name="Time" type="Node" parent="StateMachine/Entrance/Teleporting/Transitions/ToArrive"]
+script = ExtResource( 19 )
+_seconds = 0.65
+
+[node name="Actions" type="Node" parent="StateMachine/Entrance/Teleporting"]
+
+[node name="ANIM_TELEPORT" type="Node" parent="StateMachine/Entrance/Teleporting/Actions"]
+script = ExtResource( 9 )
+_onEnter = true
+_animatorPath = NodePath("../../../../../Sprite")
+PropertyName = "State"
+Value = 2
+
+[node name="ANIM_OS_ARRIVED" type="Node" parent="StateMachine/Entrance/Teleporting/Actions"]
+script = ExtResource( 18 )
+_onExit = true
+_animatorPath = NodePath("../../../../../Sprite")
+PropertyName = "FromTeleport"
+Value = true
+
+[node name="IntroAction" type="Node" parent="StateMachine/Entrance/Teleporting/Actions"]
+script = ExtResource( 8 )
+OnUpdate = true
+_pathToSprite = NodePath("../../../../../Sprite")
+_speedCurve = SubResource( 2 )
+_duration = 0.75
+_offset = Vector2( 0, -250 )
+
+[node name="ANIM_IDLE" type="Node" parent="StateMachine/Entrance/Teleporting/Actions"]
+script = ExtResource( 9 )
+_onExit = true
+_animatorPath = NodePath("../../../../../Sprite")
+PropertyName = "State"
+
+[node name="NoInput" type="Node" parent="StateMachine/Entrance"]
+script = ExtResource( 5 )
+
+[node name="Transitions" type="Node" parent="StateMachine/Entrance/NoInput"]
+
+[node name="ToIdle" type="Node" parent="StateMachine/Entrance/NoInput/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../Idle")
+
+[node name="ManualOnArriveAnim" type="Node" parent="StateMachine/Entrance/NoInput/Transitions/ToIdle"]
+script = ExtResource( 13 )
+
+[node name="Actions" type="Node" parent="StateMachine/Entrance/NoInput"]
+
 [node name="DashStates" type="Node" parent="StateMachine"]
 script = ExtResource( 3 )
-_defaultStatePath = NodePath("Dash")
+_sharedStatePath = NodePath("SharedState")
+_startStatePath = NodePath("Dash")
 
-[node name="Actions" type="Node" parent="StateMachine/DashStates"]
+[node name="SharedState" type="Node" parent="StateMachine/DashStates"]
+script = ExtResource( 5 )
 
-[node name="PARTICLE_SYSTEM_ON" type="Node" parent="StateMachine/DashStates/Actions"]
+[node name="Actions" type="Node" parent="StateMachine/DashStates/SharedState"]
+
+[node name="PARTICLE_SYSTEM_ON" type="Node" parent="StateMachine/DashStates/SharedState/Actions"]
 script = ExtResource( 14 )
 _onEnter = true
 _value = true
-_pathToParticleSystem = NodePath("../../../../GhostParticles")
+_pathToParticleSystem = NodePath("../../../../../GhostParticles")
 
-[node name="PARTICLE_SYSTEM_SET_ANIMATION" type="Node" parent="StateMachine/DashStates/Actions"]
+[node name="PARTICLE_SYSTEM_SET_ANIMATION" type="Node" parent="StateMachine/DashStates/SharedState/Actions"]
 script = ExtResource( 21 )
 OnUpdate = true
-_pathToSprite = NodePath("../../../../Sprite")
-_pathToParticleSystem = NodePath("../../../../GhostParticles")
+_pathToSprite = NodePath("../../../../../Sprite")
+_pathToParticleSystem = NodePath("../../../../../GhostParticles")
 
-[node name="PARTICLE_SYSTEM_SET_SCALE" type="Node" parent="StateMachine/DashStates/Actions"]
+[node name="PARTICLE_SYSTEM_SET_SCALE" type="Node" parent="StateMachine/DashStates/SharedState/Actions"]
 script = ExtResource( 25 )
 OnUpdate = true
-_pathToObject = NodePath("../../../..")
-_pathToParticleSystem = NodePath("../../../../GhostParticles")
+_pathToObject = NodePath("../../../../..")
+_pathToParticleSystem = NodePath("../../../../../GhostParticles")
 
-[node name="PARTICLE_SYSTEM_OFF" type="Node" parent="StateMachine/DashStates/Actions"]
+[node name="PARTICLE_SYSTEM_OFF" type="Node" parent="StateMachine/DashStates/SharedState/Actions"]
 script = ExtResource( 14 )
 _onExit = true
-_pathToParticleSystem = NodePath("../../../../GhostParticles")
+_pathToParticleSystem = NodePath("../../../../../GhostParticles")
 
 [node name="Dash" type="Node" parent="StateMachine/DashStates"]
 script = ExtResource( 5 )
@@ -964,6 +1040,14 @@ script = ExtResource( 12 )
 _conditionOperator = 1
 _axis = 2
 _comparisonType = 4
+
+[node name="ToIdleOnWall" type="Node" parent="StateMachine/DashStates/Dash/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../Idle")
+
+[node name="RayCast" type="Node" parent="StateMachine/DashStates/Dash/Transitions/ToIdleOnWall"]
+script = ExtResource( 28 )
+_pathToRaycast = NodePath("../../../../../../WallCheck")
 
 [node name="Actions" type="Node" parent="StateMachine/DashStates/Dash"]
 
@@ -1054,10 +1138,99 @@ _speed = 2.5
 script = ExtResource( 24 )
 OnUpdate = true
 
+[node name="WallJumpDash" type="Node" parent="StateMachine/DashStates"]
+script = ExtResource( 5 )
+
+[node name="Transitions" type="Node" parent="StateMachine/DashStates/WallJumpDash"]
+
+[node name="ToAir" type="Node" parent="StateMachine/DashStates/WallJumpDash/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../InAirDash")
+
+[node name="Y>0" type="Node" parent="StateMachine/DashStates/WallJumpDash/Transitions/ToAir"]
+script = ExtResource( 12 )
+_conditionOperator = 1
+_axis = 2
+_comparisonType = 4
+
+[node name="Buttons" type="Node" parent="StateMachine/DashStates/WallJumpDash/Transitions/ToAir"]
+script = ExtResource( 10 )
+_conditionOperator = 1
+_condition = 1
+_buttonConditions = [ 4 ]
+
+[node name="Actions" type="Node" parent="StateMachine/DashStates/WallJumpDash"]
+
+[node name="SetYVelocityToZero" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 16 )
+_onEnter = true
+_onExit = true
+_axisToKeep = 1
+
+[node name="DIS_ANIM_OS_DASH_RECOVERY" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 18 )
+_onEnter = true
+_animatorPath = NodePath("../../../../../Sprite")
+PropertyName = "FromDash"
+
+[node name="ANIM_JUMP" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 9 )
+_onEnter = true
+_animatorPath = NodePath("../../../../../Sprite")
+PropertyName = "State"
+Value = 4
+
+[node name="SetX" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 16 )
+_onEnter = true
+_targetVelocity = Vector2( 400, 0 )
+_axisToKeep = 2
+
+[node name="Move" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 15 )
+OnFixedUpdate = true
+_slowDown = 0.25
+_speedUp = 0.25
+_speed = 2.5
+
+[node name="Burst" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 23 )
+_axis = 1
+_time = 0.2
+_speedCurve = SubResource( 69 )
+_force = Vector2( 3, 0 )
+
+[node name="Jump" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 11 )
+_onEnter = true
+_height = 50.0
+
+[node name="FaceX" type="Node" parent="StateMachine/DashStates/WallJumpDash/Actions"]
+script = ExtResource( 24 )
+OnUpdate = true
+
 [node name="InAirDash" type="Node" parent="StateMachine/DashStates"]
 script = ExtResource( 5 )
 
 [node name="Transitions" type="Node" parent="StateMachine/DashStates/InAirDash"]
+
+[node name="ToWallSlide" type="Node" parent="StateMachine/DashStates/InAirDash/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../WallSlide/Slide")
+
+[node name="RayCast" type="Node" parent="StateMachine/DashStates/InAirDash/Transitions/ToWallSlide"]
+script = ExtResource( 28 )
+_pathToRaycast = NodePath("../../../../../../WallCheck")
+
+[node name="InputCorrespondsToDirection" type="Node" parent="StateMachine/DashStates/InAirDash/Transitions/ToWallSlide"]
+script = ExtResource( 26 )
+_awaitedCondition = false
+
+[node name="InputHeldFor 02 Seconds" type="Node" parent="StateMachine/DashStates/InAirDash/Transitions/ToWallSlide"]
+script = ExtResource( 29 )
+_condition = 2
+_buttonConditions = [ 2, 3 ]
+_time = 0.05
 
 [node name="ToIdle" type="Node" parent="StateMachine/DashStates/InAirDash/Transitions"]
 script = ExtResource( 6 )
@@ -1105,6 +1278,137 @@ PropertyName = "FromAir"
 Value = true
 
 [node name="FaceX" type="Node" parent="StateMachine/DashStates/InAirDash/Actions"]
+script = ExtResource( 24 )
+OnUpdate = true
+
+[node name="WallSlide" type="Node" parent="StateMachine"]
+script = ExtResource( 3 )
+_startStatePath = NodePath("Slide")
+
+[node name="Slide" type="Node" parent="StateMachine/WallSlide"]
+script = ExtResource( 5 )
+
+[node name="Transitions" type="Node" parent="StateMachine/WallSlide/Slide"]
+
+[node name="ToIdle" type="Node" parent="StateMachine/WallSlide/Slide/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../Idle")
+
+[node name="Grounded" type="Node" parent="StateMachine/WallSlide/Slide/Transitions/ToIdle"]
+script = ExtResource( 7 )
+
+[node name="ToInAir" type="Node" parent="StateMachine/WallSlide/Slide/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../InAir")
+
+[node name="ButtonPressed" type="Node" parent="StateMachine/WallSlide/Slide/Transitions/ToInAir"]
+script = ExtResource( 26 )
+_awaitedCondition = false
+
+[node name="ButtonHeld" type="Node" parent="StateMachine/WallSlide/Slide/Transitions/ToInAir"]
+script = ExtResource( 29 )
+_condition = 2
+_buttonConditions = [ 2, 3 ]
+_time = 0.05
+
+[node name="ToJump" type="Node" parent="StateMachine/WallSlide/Slide/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../Jump")
+
+[node name="ButtonPressed" type="Node" parent="StateMachine/WallSlide/Slide/Transitions/ToJump"]
+script = ExtResource( 10 )
+_buttonConditions = [ 4 ]
+
+[node name="DashNot" type="Node" parent="StateMachine/WallSlide/Slide/Transitions/ToJump"]
+script = ExtResource( 10 )
+_condition = 3
+_buttonConditions = [ 5 ]
+
+[node name="ToJumpDash" type="Node" parent="StateMachine/WallSlide/Slide/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../DashStates/WallJumpDash")
+
+[node name="Dash" type="Node" parent="StateMachine/WallSlide/Slide/Transitions/ToJumpDash"]
+script = ExtResource( 10 )
+_condition = 2
+_buttonConditions = [ 5 ]
+
+[node name="ButtonPressed" type="Node" parent="StateMachine/WallSlide/Slide/Transitions/ToJumpDash"]
+script = ExtResource( 10 )
+_buttonConditions = [ 4 ]
+
+[node name="Actions" type="Node" parent="StateMachine/WallSlide/Slide"]
+
+[node name="Flip" type="Node" parent="StateMachine/WallSlide/Slide/Actions"]
+script = ExtResource( 31 )
+_onEnter = true
+
+[node name="Log" type="Node" parent="StateMachine/WallSlide/Slide/Actions"]
+script = ExtResource( 30 )
+_onEnter = true
+_message = "Hello!"
+
+[node name="SetY" type="Node" parent="StateMachine/WallSlide/Slide/Actions"]
+script = ExtResource( 16 )
+OnFixedUpdate = true
+_onEnter = true
+_targetVelocity = Vector2( 0, 15 )
+_axisToKeep = 1
+
+[node name="Jump" type="Node" parent="StateMachine/WallSlide"]
+script = ExtResource( 5 )
+
+[node name="Transitions" type="Node" parent="StateMachine/WallSlide/Jump"]
+
+[node name="ToAir" type="Node" parent="StateMachine/WallSlide/Jump/Transitions"]
+script = ExtResource( 6 )
+_toStatePath = NodePath("../../../../InAir")
+
+[node name="Y>=0" type="Node" parent="StateMachine/WallSlide/Jump/Transitions/ToAir"]
+script = ExtResource( 12 )
+_conditionOperator = 1
+_axis = 2
+_comparisonType = 4
+
+[node name="Buttons" type="Node" parent="StateMachine/WallSlide/Jump/Transitions/ToAir"]
+script = ExtResource( 10 )
+_conditionOperator = 1
+_condition = 1
+_buttonConditions = [ 4 ]
+
+[node name="Actions" type="Node" parent="StateMachine/WallSlide/Jump"]
+
+[node name="ANIM_JUMP" type="Node" parent="StateMachine/WallSlide/Jump/Actions"]
+script = ExtResource( 9 )
+_onEnter = true
+_animatorPath = NodePath("../../../../../Sprite")
+PropertyName = "State"
+Value = 4
+
+[node name="SetX" type="Node" parent="StateMachine/WallSlide/Jump/Actions"]
+script = ExtResource( 16 )
+_onEnter = true
+_targetVelocity = Vector2( 250, 0 )
+_axisToKeep = 2
+
+[node name="Jump" type="Node" parent="StateMachine/WallSlide/Jump/Actions"]
+script = ExtResource( 11 )
+_onEnter = true
+_height = 50.0
+
+[node name="Move" type="Node" parent="StateMachine/WallSlide/Jump/Actions"]
+script = ExtResource( 15 )
+OnFixedUpdate = true
+_slowDown = 0.25
+_speedUp = 0.25
+_speed = 1.0
+
+[node name="SetYVelocityToZero" type="Node" parent="StateMachine/WallSlide/Jump/Actions"]
+script = ExtResource( 16 )
+_onExit = true
+_axisToKeep = 1
+
+[node name="FaceX" type="Node" parent="StateMachine/WallSlide/Jump/Actions"]
 script = ExtResource( 24 )
 OnUpdate = true
 

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/x_shoot.wav-22330d92ae09148c9bc23585f2ba0184.sample"
+
+[deps]
+
+source_file="res://objects/mega_man_x/_sfx/x_shoot.wav"
+dest_files=[ "res://.import/x_shoot.wav-22330d92ae09148c9bc23585f2ba0184.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

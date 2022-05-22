@@ -12,7 +12,16 @@ config_version=4
 
 config/name="MegaManXClone"
 run/main_scene="res://levels/test_level.tscn"
-config/icon="res://icon.png"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
+config/icon="res://x_helmet_ico.png"
+
+[display]
+
+window/size/resizable=false
+window/size/fullscreen=true
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 
@@ -71,6 +80,11 @@ dash={
 fullscreen={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+pause={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

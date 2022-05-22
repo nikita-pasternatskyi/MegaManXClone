@@ -397,7 +397,6 @@ shape = SubResource( 31 )
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 3 )
-_defaultStatePath = NodePath("Idle")
 
 [node name="Actions" type="Node" parent="StateMachine"]
 
@@ -493,6 +492,4 @@ editor_draw_limits = true
 editor_draw_drag_margin = true
 
 [node name="StateMachineDebug" parent="Camera" instance=ExtResource( 17 )]
-margin_top = -1.0
-margin_bottom = 249.0
 pathToStateMachine = NodePath("../../StateMachine")

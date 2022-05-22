@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/x_jump_dash.wav-90e4af9876e214420b3041b9af0b452d.sample"
+
+[deps]
+
+source_file="res://objects/mega_man_x/_sfx/x_jump_dash.wav"
+dest_files=[ "res://.import/x_jump_dash.wav-90e4af9876e214420b3041b9af0b452d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

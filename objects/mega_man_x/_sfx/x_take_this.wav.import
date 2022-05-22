@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/x_take_this.wav-3b0855f3697a3aae193da0d1e772963f.sample"
+
+[deps]
+
+source_file="res://objects/mega_man_x/_sfx/x_take_this.wav"
+dest_files=[ "res://.import/x_take_this.wav-3b0855f3697a3aae193da0d1e772963f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

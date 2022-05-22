@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/x_teleport_away.wav-6235223011cb64fc8910ddf09b2b5c78.sample"
+
+[deps]
+
+source_file="res://objects/mega_man_x/_sfx/x_teleport_away.wav"
+dest_files=[ "res://.import/x_teleport_away.wav-6235223011cb64fc8910ddf09b2b5c78.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

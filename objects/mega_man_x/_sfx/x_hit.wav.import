@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/x_hit.wav-b984f37c0fea3b29ae575a29bd3f7172.sample"
+
+[deps]
+
+source_file="res://objects/mega_man_x/_sfx/x_hit.wav"
+dest_files=[ "res://.import/x_hit.wav-b984f37c0fea3b29ae575a29bd3f7172.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

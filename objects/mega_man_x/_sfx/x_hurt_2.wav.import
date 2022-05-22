@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/x_hurt_2.wav-3e3d7e282ea879b56fe8195dc255b792.sample"
+
+[deps]
+
+source_file="res://objects/mega_man_x/_sfx/x_hurt_2.wav"
+dest_files=[ "res://.import/x_hurt_2.wav-3e3d7e282ea879b56fe8195dc255b792.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

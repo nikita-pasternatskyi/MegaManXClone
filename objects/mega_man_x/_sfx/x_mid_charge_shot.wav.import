@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/x_mid_charge_shot.wav-825623132498714929736f3d4163a4f5.sample"
+
+[deps]
+
+source_file="res://objects/mega_man_x/_sfx/x_mid_charge_shot.wav"
+dest_files=[ "res://.import/x_mid_charge_shot.wav-825623132498714929736f3d4163a4f5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
